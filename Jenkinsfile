@@ -1,20 +1,23 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven'
+    }
 
     stages {
-        stage('Build') {
+        stage('Git Checkout') {
             steps {
-                echo 'Building..'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ZudaPradana/sonar']])
+                echo 'Git Checkout Completed'
             }
         }
-        stage('Test') {
+
+        stage('SonarQube Analysis') {
             steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+                withSonarQubeEnv('ServerNameSonar') {
+                    bat '''mvn clean verify sonar:sonar -Dsonar.projectKey=ProjectNameSonar -Dsonar.projectName='ProjectNameSonar' -Dsonar.host.url=http://localhost:9000''' //port 9000 is default for sonar
+                    echo 'SonarQube Analysis Completed'
+                }
             }
         }
     }
