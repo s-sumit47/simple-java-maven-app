@@ -43,23 +43,23 @@ pipeline {
         }
         
         stage('Deploy to Tomcat') {
-    steps {
-        // Copy the WAR file to the Tomcat webapps directory using Windows command
-        bat "xcopy /y target\\*.war C:\\Program Files\\Apache Software Foundation\\Tomcat\\webapps\\"
-        
-        // Restart Tomcat (optional, if needed)
-        bat "net stop TomcatServiceName"
-        bat "net start TomcatServiceName"
-        
-        // Deploy using the Deploy to container Plugin
-        deploy(
-            adapters: [
-                tomcat8(credentialsId: 'admin', url: 'http://localhost:8090/')
-            ],
-            contextPath: '', // Optional: Specify context path if needed, e.g., '/myapp'
-            war: 'target/*.war'
-        )
+            steps {
+                // Copy the WAR file to the Tomcat webapps directory using Windows command
+                bat "copy target\\*.war C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps"
+                
+                // Restart Tomcat (optional, if needed)
+                bat "net stop TomcatServiceName"
+                bat "net start TomcatServiceName"
+                
+                // Deploy using the Deploy to container Plugin
+                deploy(
+                    adapters: [
+                        tomcat8(credentialsId: 'admin', url: 'http://localhost:8090/')
+                    ],
+                    contextPath: '', // Optional: Specify context path if needed, e.g., '/myapp'
+                    war: 'target/*.war'
+                )
+            }
+        }
     }
-}
-
 }
