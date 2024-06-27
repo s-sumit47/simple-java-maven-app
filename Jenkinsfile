@@ -40,7 +40,7 @@ pipeline {
                 
                 // Execute SonarQube analysis with Maven
                 withSonarQubeEnv('sonar') {
-                    sh "${MVN_HOME}/bin/mvn clean verify sonar:sonar"
+                    bat "${MVN_HOME}/bin/mvn clean verify sonar:sonar"
                 }
             }
         }
