@@ -45,7 +45,7 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 // Copy the WAR file to the Tomcat webapps directory using Windows command
-                bat "copy target\\*.war C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps"
+                bat "copy target\\*.war C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\webapps"
                 
                 // Restart Tomcat (optional, if needed)
                 bat "net stop TomcatServiceName"
