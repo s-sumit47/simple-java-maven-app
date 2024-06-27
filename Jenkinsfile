@@ -49,6 +49,15 @@ pipeline {
                 
                 // Restart Tomcat (optional, if needed)
                 bat "sudo systemctl restart tomcat"
+                
+                // Deploy using the Deploy to container Plugin
+                deploy(
+                    adapters: [
+                        tomcat8(credentialsId: 'admin', url: 'http://localhost:8090/')
+                    ],
+                    contextPath: '', // Optional: Specify context path if needed, e.g., '/myapp'
+                    war: 'target/*.war'
+                )
             }
         }
     }
