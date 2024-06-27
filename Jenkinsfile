@@ -29,16 +29,15 @@ pipeline {
             }
         }
         
-        node {
-  stage('SCM') {
-    checkout scm
-  }
-  stage('SonarQube Analysis') {
-    def mvn = tool 'Default Maven';
-    withSonarQubeEnv() {
-      bat "${mvn}/bin/mvn clean verify sonar:sonar"
-    }
-  }
-}
+        stage('SonarQube Analysis') {
+            steps {
+                checkout scm
+                def mvnHome = tool name: 'Default Maven', type: 'maven'
+                
+                withSonarQubeEnv('sonar') {
+                    sh "${mvnHome}/bin/mvn clean verify sonar:sonar"
+                }
+            }
+        }
     }
 }
