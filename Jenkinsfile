@@ -31,17 +31,24 @@ pipeline {
         
         stage('SonarQube Analysis') {
             environment {
-                // Define environment variable to hold Maven home path
                 MVN_HOME = tool name: 'Default Maven', type: 'maven'
             }
             steps {
-                // Checkout SCM if needed
                 checkout scm
                 
-                // Execute SonarQube analysis with Maven
                 withSonarQubeEnv('sonar') {
                     bat "${MVN_HOME}/bin/mvn clean verify sonar:sonar"
                 }
+            }
+        }
+        
+        stage('Deploy to Tomcat') {
+            steps {
+                // Copy the WAR file to the Tomcat webapps directory
+                bat "cp target/*.war /path/to/tomcat/webapps/"
+                
+                // Restart Tomcat (optional, if needed)
+                bat "sudo systemctl restart tomcat"
             }
         }
     }
