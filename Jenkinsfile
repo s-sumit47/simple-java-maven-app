@@ -31,9 +31,13 @@ pipeline {
         
         stage('SonarQube Analysis') {
             steps {
-                checkout scm
+                // Define Maven tool within the steps block
                 def mvnHome = tool name: 'Default Maven', type: 'maven'
                 
+                // Checkout SCM (if needed)
+                checkout scm
+                
+                // Execute SonarQube analysis with Maven
                 withSonarQubeEnv('sonar') {
                     sh "${mvnHome}/bin/mvn clean verify sonar:sonar"
                 }
