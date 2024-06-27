@@ -30,16 +30,17 @@ pipeline {
         }
         
         stage('SonarQube Analysis') {
+            environment {
+                // Define environment variable to hold Maven home path
+                MVN_HOME = tool name: 'Default Maven', type: 'maven'
+            }
             steps {
-                // Define Maven tool within the steps block
-                def mvnHome = tool name: 'Default Maven', type: 'maven'
-                
-                // Checkout SCM (if needed)
+                // Checkout SCM if needed
                 checkout scm
                 
                 // Execute SonarQube analysis with Maven
                 withSonarQubeEnv('sonar') {
-                    sh "${mvnHome}/bin/mvn clean verify sonar:sonar"
+                    sh "${MVN_HOME}/bin/mvn clean verify sonar:sonar"
                 }
             }
         }
