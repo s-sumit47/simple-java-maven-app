@@ -16,6 +16,9 @@
     </dependency>
   </dependencies>
   <properties>
+  <sonar.projectKey>MyFirstTest</sonar.projectKey>
+  </properties>
+  <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
