@@ -45,7 +45,7 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 // Copy the WAR file to the Tomcat webapps directory using Windows command
-                bat 'copy "target/*.war" "C:/apache-tomcat-9.0.41/webapps"'
+                bat 'copy "**/*.war" "C:/apache-tomcat-9.0.41/webapps"'
                 
                 // Restart Tomcat (optional, if needed)
                 bat "net stop TomcatServiceName"
@@ -57,7 +57,7 @@ pipeline {
                         tomcat8(credentialsId: 'admin', url: 'http://localhost:9090/')
                     ],
                     contextPath: '', // Optional: Specify context path if needed, e.g., '/myapp'
-                    war: 'target/*.war'
+                    war: '**/*.war'
                 )
             }
         }
